@@ -1,4 +1,4 @@
-# gif_gallery_app
+# Buscador de Gifs Divertidos
 
 Galeria de Gifs animados para diversão e compartilhamento
 
