@@ -15,26 +15,27 @@ class Api {
 
   Api({this.type, this.q, this.offset});
 
-  bool isTypeSearch() => this.type ==  TYPE_SEARCH;
-  bool isTypeTrending() => this.type ==  TYPE_TRENDING;
+  bool isTypeSearch() => this.type == TYPE_SEARCH;
+
+  bool isTypeTrending() => this.type == TYPE_TRENDING;
 
   String get url {
     String params = "api_key=$KEY&offset=${offset ?? 0}&limit=$LIMIT";
     String type = isTypeTrending() ? TYPE_TRENDING : TYPE_SEARCH;
 
-    if(isTypeSearch()) {
+    if (isTypeSearch()) {
       params += "&q=$q";
     }
 
     return "$BASE_URL/$type?$params";
   }
 
-  factory Api.trending() {
-    return Api(type: 'trending');
+  factory Api.trending({offset}) {
+    return Api(type: 'trending', offset: offset ?? 0);
   }
 
-  factory Api.search(term) {
-    return Api(type: 'search', q: term);
+  factory Api.search(term, {offset}) {
+    return Api(type: 'search', q: term, offset: offset ?? 0);
   }
 
   Future<Map<String, dynamic>> getData() async {

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gif_gallery_app/components/app_bar.dart';
 import 'package:gif_gallery_app/components/loading.dart';
 import 'package:gif_gallery_app/events/home.dart';
 import 'package:gif_gallery_app/screens/home/search.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:gif_gallery_app/screens/home/table_gifs.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -11,18 +12,13 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   HomeEvents homeEvents;
-  bool _loading = true;
 
   @override
   void initState() {
     super.initState();
 
     this.homeEvents = HomeEvents(this);
-    this.homeEvents.loadGifts(onDone: () {
-      setState(() {
-        _loading = false;
-      });
-    });
+    this.homeEvents.loadGifts();
   }
 
   @override
@@ -31,35 +27,31 @@ class _HomeState extends State<Home> {
   }
 
   Widget buildView() {
-    if (_loading) {
-      return Loading(text: 'carregando...').build();
+    if (homeEvents.loading) {
+      return Loading(
+        text: 'carregando...',
+        assetImage: "assets/images/logo.png",
+        indicator: false,
+      ).build();
     }
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Buscador de Gifs',
-            style: GoogleFonts.acme(
-              fontWeight: FontWeight.bold,
-              fontSize: 26,
-              letterSpacing: 1,
-            ),
-          ),
-          toolbarHeight: 80,
-          elevation: 0.1,
-          leading: Image.asset(
-            'assets/images/logo.png',
-            height: 30,
-          ),
-          backgroundColor: Colors.indigoAccent,
-        ),
+        appBar: CustomAppBar(title: 'Buscador de gifs'),
         body: Container(
-          color: Colors.indigo,
+          color: Colors.black87,
           child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Search(controller: homeEvents.textController)
-              ]),
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Search(
+                onSearchSubmitted: homeEvents.onSearchSubmit,
+              ),
+              GiftGrid(context,
+                  items: homeEvents.items,
+                  onGifTap: homeEvents.onGifTap,
+                  onLoadMoreTap: homeEvents.onMoreGifTap,
+                  isSearch: homeEvents.term.isNotEmpty),
+            ],
+          ),
         ));
   }
 }

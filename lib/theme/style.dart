@@ -21,3 +21,31 @@ ThemeData CustomAppTheme() => ThemeData(
             fontSize: 14.0, decoration: TextDecoration.none),
       ),
     );
+
+LinearGradient LinearGradientDefault() => LinearGradient(
+      begin: Alignment.topRight,
+      end: Alignment.bottomLeft,
+      colors: [Colors.indigo[800], Colors.indigoAccent],
+    );
+
+Widget TextTitle(text, {padding, alignCenter}) {
+  return Padding(
+    padding: padding ?? EdgeInsets.zero,
+    child: Text(
+      text,
+      textAlign: alignCenter ? TextAlign.center : TextAlign.left,
+      style: GoogleFonts.acme(fontSize: 30),
+    ),
+  );
+}
+
+Widget TextSubtitle(text, {padding, alignCenter}) {
+  return Padding(
+    padding: padding ?? EdgeInsets.zero,
+    child: Text(
+      text,
+      textAlign: alignCenter ? TextAlign.center : TextAlign.left,
+      style: GoogleFonts.acme(fontSize: 20),
+    ),
+  );
+}

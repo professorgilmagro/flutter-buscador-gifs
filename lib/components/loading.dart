@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:gif_gallery_app/theme/style.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Loading {
   String text;
-  Widget indicator;
+  dynamic indicator;
+  String assetImage;
 
-  Loading({this.text, this.indicator});
+  Loading({this.text, this.indicator, this.assetImage});
 
   Widget build() {
     return Container(
+        decoration: BoxDecoration(gradient: LinearGradientDefault()),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -17,13 +20,26 @@ class Loading {
 
   List<Widget> getContent() {
     List<Widget> items = [];
-    items.add(indicator ?? _getDefaultIndicator());
+
+    if (indicator != false) {
+      items.add(indicator is Widget ? indicator : _getDefaultIndicator());
+    }
+
+    if (assetImage != null && assetImage.isNotEmpty) {
+      items.add(this._getLogoImage());
+    }
+
     if (text != null && text.isNotEmpty) {
       items.add(_getTextContent());
     }
 
     return items;
   }
+
+  Widget _getLogoImage() => Image.asset(
+        this.assetImage,
+        height: 120,
+      );
 
   Widget _getDefaultIndicator() => Center(
         child: CircularProgressIndicator(
@@ -35,7 +51,8 @@ class Loading {
       padding: EdgeInsets.only(top: 20),
       child: Text(
         this.text,
-        style: GoogleFonts.pompiere(fontSize: 18, color: Colors.white, decoration: TextDecoration.none),
+        style: GoogleFonts.pompiere(
+            fontSize: 18, color: Colors.white, decoration: TextDecoration.none),
         textAlign: TextAlign.center,
       ));
 }

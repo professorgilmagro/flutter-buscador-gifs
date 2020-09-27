@@ -6,12 +6,7 @@ class Gif {
   String slug;
   String title;
 
-  Gif({
-    @required this.id,
-    @required this.url,
-    @required this.title,
-    this.slug
-  });
+  Gif({@required this.id, @required this.url, @required this.title, this.slug});
 
   String toString() {
     return toJson().toString();
@@ -19,15 +14,15 @@ class Gif {
 
   factory Gif.fromJson(Map<String, dynamic> json) {
     return Gif(
-        id: json["id"],
-        url: json["images"]["original"]["url"],
-        title: json["title"],
-        slug: json["slug"],
+      id: json["id"],
+      url: json["images"]["fixed_height"]["url"],
+      title: json["title"],
+      slug: json["slug"],
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {'id': id, 'title': title, 'url' : url, slug: slug};
+    return {'id': id, 'title': title, 'url': url, slug: slug};
   }
 
   static List<Gif> fillCollection(List json) {
